@@ -74,6 +74,7 @@ docker run -d  --name we-mp-rss  -p 8001:8001 -v ./data:/app/data  docker.1ms.ru
 - 支持自定义RSS分页大小
 - 支持导出md/docx/pdf/json格式
 - 支持API接口调用/WebHook调用
+- 支持HTML内容过滤规则（全局规则和公众号专属规则）
 
 
 # ❤️ 赞助
@@ -269,6 +270,84 @@ fetch(`${baseUrl}/api/feeds`, { headers })
 ```
 
 详细文档请参考：[AK 认证指南](docs/AK_Authentication_Guide.md)
+
+## HTML 内容过滤规则
+
+WeRSS 支持自定义 HTML 内容过滤规则，可以在采集文章内容时自动清理不需要的元素，如广告、推荐链接等。
+
+### 功能特点
+
+- **全局规则**：不指定公众号时，规则对所有公众号生效
+- **公众号专属规则**：可以为特定公众号或多个公众号配置不同的过滤规则
+- **优先级控制**：支持设置规则优先级，数值越大越先执行
+- **多种过滤方式**：
+  - 按 ID 移除元素
+  - 按 CSS Class 移除元素
+  - 按 CSS 选择器移除元素
+  - 按属性过滤元素
+  - 按正则表达式移除内容
+  - 移除常见 HTML 元素（script、style、注释等）
+
+### 使用方法
+
+1. 登录管理界面，进入「过滤规则」页面
+2. 点击「添加过滤规则」
+3. 配置规则：
+   - **选择公众号**：可选多个公众号，不选择则为全局规则
+   - **规则名称**：便于识别的规则名称
+   - **优先级**：数值越大优先级越高（0-100）
+   - **过滤配置**：
+     - 移除 ID 元素：每行一个 ID，如 `ad-banner`
+     - 移除 Class 元素：每行一个 class，如 `ad-container`
+     - CSS 选择器：如 `div.ad-wrapper`、`.recommend-list > li`
+     - 属性过滤：如 `data-type="ad"`
+     - 正则表达式：用于精确匹配和移除内容
+
+### 示例配置
+
+#### 全局广告过滤规则
+```
+规则名称：全局广告清理
+公众号：不选择（全局规则）
+优先级：10
+移除 ID：ad-banner、footer-nav
+移除 Class：ad-container、recommend-box
+CSS 选择器：div.ad-wrapper、.recommend-list > li
+移除常见 HTML 元素：开启
+```
+
+#### 特定公众号规则
+```
+规则名称：某公众号专属过滤
+公众号：选择特定公众号
+优先级：20（高于全局规则，会先执行）
+移除 Class：custom-ad、special-banner
+```
+
+### API 接口
+
+过滤规则支持完整的 REST API 操作：
+
+```bash
+# 获取过滤规则列表
+GET /api/filter-rules
+
+# 创建过滤规则
+POST /api/filter-rules
+{
+  "mp_id": "[]",  // 空数组表示全局规则
+  "rule_name": "全局广告过滤",
+  "remove_ids": ["ad-banner"],
+  "remove_classes": ["ad-container"],
+  "priority": 10
+}
+
+# 更新过滤规则
+PUT /api/filter-rules/{rule_id}
+
+# 删除过滤规则
+DELETE /api/filter-rules/{rule_id}
+```
 
 # 常见问题
 
