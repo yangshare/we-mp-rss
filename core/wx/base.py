@@ -201,26 +201,25 @@ class WxGather:
                 # item_show_type：展示类型（0通常为普通图文，10可能为特定的无图或特殊样式）
                 # has_red_packet_cover：封面是否有红包挂件（0为无）
                 art={
-                    "id":str(data['id']),
-                    "mp_id":data['mp_id'],
-                    "title":data['title'],
-                    "url":data['link'],
-                    "pic_url":data['cover'],
-                    "content":data.get("content",""),
-                    "publish_type":data.get("publish_type",0),
-                    "publish_src":data.get("publish_src",0),
-                    "publish_src":data.get("publish_src",0),
-                    "publish_status":data.get("publish_status","200"),
-                    "publish_time":data.get("update_time",""),
-                    "create_time":data.get("create_time",""),
-                    "original_check_type":data.get("original_check_type",""),
-                    "in_profile":data.get("in_profile",""),
-                    "pre_publish_status":data.get("pre_publish_status",""),
-                    "service_type":data.get("service_type",""),
-                    "item_show_types":data.get("item_show_types",""),
-                    "copyright_stat":data.get("copyright_stat",""),
-                    "has_red_packet_cover":data.get("has_red_packet_cover",""),
-                    "status": DATA_STATUS.DELETED if data.get("is_deleted",False) else DATA_STATUS.ACTIVE,
+                    "id":str(data['id']),  # 文章唯一标识ID
+                    "mp_id":data['mp_id'],  # 公众号ID
+                    "title":data['title'],  # 文章标题
+                    "url":data['link'],  # 文章链接地址
+                    "pic_url":data['cover'],  # 封面图片URL
+                    "content":data.get("content",""),  # 文章正文内容
+                    "publish_type":data.get("publish_type",0),  # 发布类型
+                    "publish_src":data.get("publish_src",0),  # 发布来源
+                    "publish_status":data.get("publish_status","200"),  # 发布状态码
+                    "publish_time":data.get("update_time",""),  # 发布/更新时间
+                    "create_time":data.get("create_time",""),  # 创建时间
+                    "original_check_type":data.get("original_check_type",0),  # 原创检测类型
+                    "in_profile":data.get("in_profile",0),  # 是否在公众号主页显示
+                    "pre_publish_status":data.get("pre_publish_status",0),  # 预发布状态
+                    "service_type":data.get("service_type",0),  # 服务类型
+                    "item_show_types":data.get("item_show_types",0),  # 展示类型标识
+                    "copyright_stat":data.get("copyright_stat",0),  # 版权/原创状态(0非原创,1原创)
+                    "has_red_packet_cover":data.get("has_red_packet_cover",0),  # 封面是否有红包挂件
+                    "status": DATA_STATUS.DELETED if data.get("is_deleted",False) else DATA_STATUS.ACTIVE,  # 数据状态(已删除/正常)
                 }
                 if 'digest' in data:
                     art['description']=data['digest']
@@ -255,8 +254,8 @@ class WxGather:
             url,
             params=params,
             headers=headers,
-            proxies=proxies,
-            )
+            proxies=proxies,    #type : ignore
+            ) 
             response.raise_for_status()  # 检查状态码是否为200
             data = response.text  # 解析JSON数据
             msg = json.loads(data)  # 手动解析
