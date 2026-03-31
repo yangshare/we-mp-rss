@@ -42,18 +42,35 @@ class Article(ArticleBase):
     def to_dict(self):
         """将Article对象转换为字典"""
         return {
+            # 文章基础属性
             'id': self.id,
             'mp_id': self.mp_id,
             'title': self.title,
             'pic_url': self.pic_url,
             'url': self.url,
             'description': self.description,
-            'content': self.content,
-            'content_html': self.content_html,
+            'extinfo': self.extinfo,
             'status': self.status,
             'publish_time': self.publish_time,
+            'create_time': self.create_time,
+            'publish_type': self.publish_type,
+            'publish_src': self.publish_src,
+            'publish_status': self.publish_status,
+            # 状态与类型标识
+            'original_check_type': self.original_check_type,
+            'in_profile': self.in_profile,
+            'pre_publish_status': self.pre_publish_status,
+            'service_type': self.service_type,
+            'item_show_types': self.item_show_types,
+            'copyright_stat': self.copyright_stat,
+            'has_red_packet_cover': self.has_red_packet_cover,
+            # 内容
+            'content': self.content,
+            'content_html': self.content_html,
+            # 系统字段
             'created_at': self.created_at.isoformat() if self.created_at and hasattr(self.created_at, "isoformat") else self.created_at,
             'updated_at': self.updated_at.isoformat() if self.updated_at and hasattr(self.updated_at, "isoformat") else self.updated_at,
+            'updated_at_millis': self.updated_at_millis,
             'is_export': self.is_export,
             'is_read': self.is_read,
             'is_favorite': self.is_favorite
