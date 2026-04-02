@@ -14,29 +14,8 @@ from driver.success import setStatus,CanGetToken
 from driver.wxarticle import Web
 from core.wait import Wait
 import random
-# 定义一些常见的 User-Agent
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36",
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1",
-    "Mozilla/5.0 (Android 11; Mobile; rv:89.0) Gecko/89.0 Firefox/89.0",
-    # Chrome 桌面端
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-    # Firefox 桌面端
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/114.0",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13.4; rv:109.0) Gecko/20100101 Firefox/114.0",
-    # Safari 桌面端
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15",
-    # Edge 桌面端
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67",
-    # Android 移动端 Chrome
-    "Mozilla/5.0 (Linux; Android 13; SM-S901B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
-    # Android 移动端 Firefox
-    "Mozilla/5.0 (Android 13; Mobile; rv:109.0) Gecko/109.0 Firefox/114.0",
-    # iOS 移动端 Safari
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1"
-]
+# 微信内置浏览器 User-Agent
+WECHAT_USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.38(0x1800262b) NetType/WIFI Language/zh_CN"
 # 定义基类
 class WxGather:
     articles=[]
@@ -84,13 +63,11 @@ class WxGather:
         self.Gather_Content=cfg.get('gather.content',False)
         self.cookies = get_token_val('cookie', '')
         self.token=get_token_val('token','')
-        # 随机选择一个 User-Agent
-        self.user_agent = cfg.get('user_agent', '')
-        user_agent = random.choice(USER_AGENTS)
-        self.user_agent=user_agent
+        # 使用微信内置浏览器 User-Agent
+        self.user_agent = WECHAT_USER_AGENT
         self.headers = {
             "Cookie":self.cookies,
-            "User-Agent": user_agent
+            "User-Agent": self.user_agent
         }
         # 加载代理配置
         self.proxy_enabled = cfg.get('proxy.enabled', False)
@@ -143,11 +120,10 @@ class WxGather:
         
         return ""
     def fix_header(self,url):
-         user_agent = random.choice(USER_AGENTS)
           # 更新请求头
          headers = self.headers.copy()
          headers.update({
-                "User-Agent": user_agent,
+                "User-Agent": WECHAT_USER_AGENT,
                 "Refer": url,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
                 "Accept-Language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",

@@ -111,9 +111,9 @@ async function handleRequest(request: Request): Promise<Response> {
       }
     }
     
-    // 设置默认 User-Agent
+    // 设置默认 User-Agent（微信内置浏览器）
     if (!headers.has("User-Agent")) {
-      headers.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+      headers.set("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.38(0x1800262b) NetType/WIFI Language/zh_CN");
     }
 
     // 发起请求
