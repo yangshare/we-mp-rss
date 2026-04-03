@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 import logging
 import os
-from tools.github_updater import GitHubUpdater
+from tools.github.github_updater import GitHubUpdater
 
 logger = logging.getLogger(__name__)
 

@@ -108,7 +108,7 @@ def sync_article_content(
             return True, mode
 
         from driver.wxarticle import Web
-        from tools.fix import fix_html
+        from tools.db.fix import fix_html
 
         article.content = content
         article.content_html = fix_html(content)

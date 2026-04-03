@@ -386,7 +386,7 @@ def apply_filter_rules(html_content: str, mp_id: str) -> str:
     if not rules:
         return html_content
 
-    from tools.htmltools import htmltools
+    from tools.file.htmltools import htmltools
 
     print(f"[FilterRule] 开始应用过滤规则，共 {len(rules)} 条规则")
     filtered_content = html_content

@@ -504,7 +504,7 @@ class WXArticleFetcher:
         return content
    
     def clean_article_content(self,html_content: str,mp_id:str=""):
-        from tools.htmltools import htmltools
+        from tools.file.htmltools import htmltools
         html_content=self.fix_images(html_content)
         # 应用过滤规则
         try:

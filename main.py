@@ -1,7 +1,7 @@
 import uvicorn
 from core.config import cfg
 if cfg.get("redis.server.enabled", False):
-        from tools.redis_server import run_redis_server
+        from tools.sys.redis_server import run_redis_server
         run_redis_server(config_path="config.yaml")
 from core.print import print_warning, print_info, print_success
 import threading

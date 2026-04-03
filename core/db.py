@@ -146,7 +146,7 @@ class Db:
                     and art.description==existing_article.description and art.title==existing_article.title: # type: ignore
                         return False
                     if art.content_html:# type: ignore
-                        from tools.fix import fix_html
+                        from tools.db.fix import fix_html
                         art.content_html = fix_html(art.content_html) # type: ignore
                     session.merge(art)  # 使用 merge 来更新现有记录
                     session.commit()
@@ -165,12 +165,12 @@ class Db:
             art.updated_at = _to_unix_seconds(art.updated_at) # type: ignore
             
             # 清理编码问题，确保存储的数据是合法的UTF-8
-            from tools.fix import sanitize_utf8
+            from tools.db.fix import sanitize_utf8
             art.content = sanitize_utf8(art.content) if art.content else None # type: ignore
             art.content_html = sanitize_utf8(art.content_html) if art.content_html else None # type: ignore
 
             if art.content_html is None:
-                from tools.fix import fix_html
+                from tools.db.fix import fix_html
                 art.content_html = fix_html(art.content) # type: ignore
            
             session.add(art)

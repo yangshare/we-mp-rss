@@ -8,13 +8,14 @@ ENV PLANT_PATH=/app/env
 
 WORKDIR /app
 RUN echo "1.0.$(date +%Y%m%d.%H%M)">>docker_version.txt
-COPY requirements.txt install.sh ./
+COPY requirements.txt ./
+COPY scripts/install.sh /app/install.sh
 RUN apt-get update && apt-get install -y --no-install-recommends bash && rm -rf /var/lib/apt/lists/* \
     && chmod +x /app/install.sh && /app/install.sh
 
 COPY . .
-COPY config.example.yaml /app/config.yaml
-RUN chmod +x /app/start.sh
+COPY config/config.example.yaml /app/config.yaml
+RUN chmod +x /app/scripts/start.sh
 
 EXPOSE 8001
-CMD ["/app/start.sh"]
+CMD ["/app/scripts/start.sh"]

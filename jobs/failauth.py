@@ -3,7 +3,7 @@ from driver.base import WX_API
 from core.config import cfg
 from jobs.notice import sys_notice
 from driver.success import Success
-from tools.base64_tools import image_to_base64
+from tools.file.base64_tools import image_to_base64
 import time
 
 def send_wx_code(title:str="",url:str=""):
